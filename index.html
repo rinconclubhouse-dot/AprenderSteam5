@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rúbrica — Feria de Guías · 5° Grado</title>
+<link href="https://fonts.googleapis.com/css2?family=Russo+One&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --cel:#44BCF9;--fuc:#E63289;--mar:#060036;--amb:#FFD600;
+    --pur:#7B4FA0;--vrd:#059669;--bg:#F3F0FF;--wh:#fff;
+  }
+  body{font-family:'Nunito',sans-serif;background:var(--bg);color:#1a1040;font-size:14px}
+  .page{max-width:940px;margin:0 auto;padding:24px 18px 60px}
+
+  /* HEADER */
+  .header{
+    background:linear-gradient(135deg,#060036 0%,#3a1a8a 100%);
+    color:#fff;border-radius:20px;padding:24px 28px;
+    margin-bottom:22px;position:relative;overflow:hidden;
+  }
+  .header::before{
+    content:'';position:absolute;top:-40px;right:-40px;
+    width:200px;height:200px;border-radius:50%;
+    background:rgba(255,255,255,.04);
+  }
+  .header-inner{display:flex;align-items:center;gap:16px;position:relative}
+  .header-icon{font-size:44px;flex-shrink:0}
+  .header h1{font-size:22px;font-weight:900;line-height:1.15;margin-bottom:4px}
+  .header .sub{font-size:13px;opacity:.75;line-height:1.5}
+  .total-bubble{
+    margin-left:auto;flex-shrink:0;
+    background:var(--amb);border-radius:50%;
+    width:72px;height:72px;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    color:#1a1040;
+  }
+  .total-bubble .n{font-size:28px;font-weight:900;line-height:1}
+  .total-bubble .l{font-size:9px;font-weight:800;letter-spacing:.5px;text-transform:uppercase}
+
+  /* LEVELS LEGEND */
+  .levels-bar{
+    display:grid;grid-template-columns:repeat(4,1fr);gap:10px;
+    margin-bottom:22px;
+  }
+  .lv-card{
+    border-radius:14px;padding:12px 14px;text-align:center;
+    border:2px solid transparent;
+  }
+  .lv-card .lv-emoji{font-size:28px;margin-bottom:4px}
+  .lv-card .lv-name{font-weight:900;font-size:14px}
+  .lv-card .lv-pts{font-size:12px;font-weight:700;margin-top:2px;opacity:.8}
+  .lv-a{background:#FFF9E6;border-color:#FFD600;color:#7a5500}
+  .lv-b{background:#E8F8F0;border-color:#059669;color:#054a2a}
+  .lv-c{background:#EBF5FF;border-color:#2B7FCC;color:#0c3560}
+  .lv-d{background:#FFF0EF;border-color:#e05252;color:#6a1010}
+
+  /* SECTION CARD */
+  .sec{background:var(--wh);border-radius:18px;margin-bottom:18px;overflow:hidden;box-shadow:0 4px 18px rgba(0,0,0,.08)}
+  .sec-head{
+    padding:14px 22px;display:flex;align-items:center;gap:14px;color:#fff;
+  }
+  .sec-head .emoji{font-size:26px;flex-shrink:0}
+  .sec-head h2{font-size:16px;font-weight:900;flex:1;line-height:1.2}
+  .sec-head .badge{
+    background:rgba(255,255,255,.25);border:2px solid rgba(255,255,255,.4);
+    border-radius:99px;padding:4px 14px;
+    font-weight:900;font-size:13px;white-space:nowrap;flex-shrink:0
+  }
+  .h-pink{background:linear-gradient(135deg,#E63289,#f04ea0)}
+  .h-blue{background:linear-gradient(135deg,#1a7fd4,#44BCF9)}
+  .h-pur{background:linear-gradient(135deg,#6a3d9a,#9264bf)}
+  .h-grn{background:linear-gradient(135deg,#047857,#10b981)}
+  .h-amb{background:linear-gradient(135deg,#b45309,#FFD600)}
+
+  /* CRITERIA ROWS */
+  .crit-row{border-bottom:1.5px solid #f5f3ff}
+  .crit-row:last-child{border-bottom:none}
+  .crit-top{
+    padding:12px 22px 6px;display:flex;align-items:center;gap:10px;
+  }
+  .crit-top .crit-emoji{font-size:20px}
+  .crit-top .crit-name{font-weight:900;font-size:14px;color:#1a1040}
+  .crit-top .crit-q{font-size:12px;color:#7a6e9e;font-weight:700;margin-left:auto;font-style:italic}
+  .crit-levels{
+    display:grid;grid-template-columns:repeat(4,1fr);gap:0;
+    padding:0 14px 12px;
+  }
+  .cl{border-radius:10px;padding:8px 10px;margin:0 4px;font-size:12px;font-weight:700;line-height:1.45}
+  .cl .cl-pts{font-size:15px;font-weight:900;display:block;margin-bottom:3px}
+  .cl-a{background:#FFF9E6;color:#7a5500;border:1.5px solid #FFD600}
+  .cl-b{background:#E8F8F0;color:#054a2a;border:1.5px solid #059669}
+  .cl-c{background:#EBF5FF;color:#0c3560;border:1.5px solid #2B7FCC}
+  .cl-d{background:#FFF0EF;color:#6a1010;border:1.5px solid #e05252}
+
+  /* SCORE SHEET */
+  .sheet{
+    background:var(--wh);border-radius:18px;padding:22px 24px;
+    box-shadow:0 4px 18px rgba(0,0,0,.08);margin-top:20px
+  }
+  .sheet h3{font-size:15px;font-weight:900;color:#1a1040;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+  .student-line{
+    display:flex;align-items:center;gap:10px;
+    background:#f7f5ff;border-radius:12px;padding:12px 16px;margin-bottom:16px;
+    font-weight:700;font-size:13px;color:#5a4e8a
+  }
+  .student-line input{
+    flex:1;border:none;background:transparent;border-bottom:2px dashed #b0a0d0;
+    font-family:'Nunito',sans-serif;font-size:14px;font-weight:800;color:#1a1040;
+    outline:none;padding:2px 4px;
+  }
+
+  .scores-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:16px}
+  .score-box{
+    border:2px solid #e8e4f5;border-radius:12px;padding:12px 14px;
+    display:flex;align-items:center;gap:12px;
+  }
+  .score-box .sb-icon{font-size:22px;flex-shrink:0}
+  .score-box .sb-label{font-size:12px;font-weight:800;color:#5a4e8a;line-height:1.3}
+  .score-box .sb-max{font-size:11px;color:#aaa;font-weight:700}
+  .score-box .sb-line{flex:1;border-bottom:2px solid #ccc;min-width:40px}
+
+  .final-row{
+    background:linear-gradient(135deg,#060036,#3a1a8a);
+    border-radius:14px;padding:16px 22px;color:#fff;
+    display:flex;align-items:center;gap:14px;margin-bottom:16px
+  }
+  .final-row .fr-label{font-size:15px;font-weight:900;flex-shrink:0}
+  .final-row .fr-line{flex:1;border-bottom:2px dashed rgba(255,255,255,.35)}
+  .final-row .fr-score{font-size:30px;font-weight:900;color:var(--amb);flex-shrink:0}
+
+  .scale{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+  .sc-item{border-radius:12px;padding:10px 8px;text-align:center}
+  .sc-item .sc-range{font-size:14px;font-weight:900}
+  .sc-item .sc-label{font-size:10px;font-weight:800;margin-top:3px;text-transform:uppercase;letter-spacing:.3px}
+  .sc1{background:#FFF9E6;color:#7a5500}
+  .sc2{background:#E8F8F0;color:#054a2a}
+  .sc3{background:#EBF5FF;color:#0c3560}
+  .sc4{background:#FFF5EB;color:#7a3800}
+  .sc5{background:#FFF0EF;color:#6a1010}
+
+  .comments-area{
+    border:2px dashed #c0b8e8;border-radius:12px;padding:12px 16px;
+    font-size:12px;font-weight:700;color:#9a90c0;margin-top:8px;
+    min-height:60px
+  }
+
+  .print-btn{
+    display:inline-flex;align-items:center;gap:8px;
+    background:var(--mar);color:#fff;border:none;border-radius:99px;
+    padding:11px 26px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:900;
+    cursor:pointer;margin-bottom:22px;
+  }
+  .print-btn:hover{background:#3a1a8a}
+  @media print{
+    body{background:#fff}
+    .print-btn{display:none}
+    .page{padding:8px}
+    .sec,.sheet{box-shadow:none;border:1.5px solid #e0d8f5}
+    @page{margin:1.2cm}
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <button class="print-btn" onclick="window.print()">🖨️ Imprimir / Guardar PDF</button>
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-inner">
+      <div class="header-icon">🏆</div>
+      <div>
+        <h1>¡Feria de Guías! — Rúbrica de Evaluación</h1>
+        <div class="sub">Recurso 33 &nbsp;·&nbsp; 5° Grado &nbsp;·&nbsp; Guía de Supervivencia Escolar en Word</div>
+      </div>
+      <div class="total-bubble">
+        <div class="n">100</div>
+        <div class="l">puntos</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LEVELS LEGEND -->
+  <div class="levels-bar">
+    <div class="lv-card lv-a">
+      <div class="lv-emoji">⭐</div>
+      <div class="lv-name">¡Súper!</div>
+      <div class="lv-pts">5 puntos</div>
+    </div>
+    <div class="lv-card lv-b">
+      <div class="lv-emoji">😊</div>
+      <div class="lv-name">Bien</div>
+      <div class="lv-pts">4 puntos</div>
+    </div>
+    <div class="lv-card lv-c">
+      <div class="lv-emoji">🙂</div>
+      <div class="lv-name">Casi</div>
+      <div class="lv-pts">2 puntos</div>
+    </div>
+    <div class="lv-card lv-d">
+      <div class="lv-emoji">💪</div>
+      <div class="lv-name">¡Tú puedes!</div>
+      <div class="lv-pts">1 punto</div>
+    </div>
+  </div>
+
+  <!-- ══════ SECCIÓN 1: HERRAMIENTAS ══════ -->
+  <div class="sec">
+    <div class="sec-head h-pink">
+      <div class="emoji">🛠️</div>
+      <h2>Las 6 herramientas de Word</h2>
+      <div class="badge">30 puntos</div>
+    </div>
+
+    <div class="crit-row">
+      <div class="crit-top">
+        <span class="crit-emoji">📝</span>
+        <span class="crit-name">Formato del texto</span>
+        <span class="crit-q">¿Usaste fuente, tamaño, negrita y color?</span>
+      </div>
+      <div class="crit-levels">
+        <div class="cl cl-a"><span class="cl-pts">⭐ 5 pts</span>El texto tiene fuente bonita, tamaño grande, negrita y color. ¡Todo combina perfecto!</div>
+        <div class="cl cl-b"><span class="cl-pts">😊 4 pts</span>Usaste casi todo el formato bien. Falta algún detalle pequeño.</div>
+        <div class="cl cl-c"><span class="cl-pts">🙂 2 pts</span>Solo usaste negrita o cambié el tamaño, pero no combinaste todo.</div>
+        <div class="cl cl-d"><span class="cl-pts">💪 1 pt</span>El texto se ve igual que al principio, sin nada de formato.</div>
+      </div>
+    </div>
+
+    <div class="crit-row">
+      <div class="crit-top">
+        <span class="crit-emoji">🔵</span>
+        <span class="crit-name">Viñetas</span>
+        <span class="crit-q">¿Pusiste puntitos o flechitas a tu lista?</span>
+      </div>
+      <div class="crit-levels">
+        <div class="cl cl-a"><span class="cl-pts">⭐ 5 pts</span>Todos los tips tienen viñetas. Escogiste un símbolo bonito y todo queda alineado.</div>
+        <div class="cl cl-b"><span class="cl-pts">😊 4 pts</span>Las viñetas están bien puestas, aunque el símbolo es el básico (punto negro).</div>
+        <div class="cl cl-c"><span class="cl-pts">🙂 2 pts</span>Solo algunos tips tienen viñetas, o están desordenadas.</div>
+        <div class="cl cl-d"><span class="cl-pts">💪 1 pt</span>No hay viñetas en la lista.</div>
+      </div>
+    </div>
+
+    <div class="crit-row">
+      <div class="crit-top">
+        <span class="crit-emoji">📊</span>
+        <span class="crit-name">Tabla del horario</span>
+        <span class="crit-q">¿Hiciste la tabla con días y materias?</span>
+      </div>
+      <div class="crit-levels">
+        <div class="cl cl-a"><span class="cl-pts">⭐ 5 pts</span>La tabla tiene todos los días y horas, los encabezados en negrita y colores aplicados. ¡Queda genial!</div>
+        <div class="cl cl-b"><span class="cl-pts">😊 4 pts</span>La tabla está completa con datos correctos, pero tiene poco color o formato.</div>
+        <div class="cl cl-c"><span class="cl-pts">🙂 2 pts</span>La tabla existe pero le faltan datos o el formato es muy básico.</div>
+        <div class="cl cl-d"><span class="cl-pts">💪 1 pt</span>No hay tabla o está muy mal hecha.</div>
+      </div>
+    </div>
+
+    <div class="crit-row">
+      <div class="crit-top">
+        <span class="crit-emoji">🖼️</span>
+        <span class="crit-name">Imágenes</span>
+        <span class="crit-q">¿Las imágenes están bien puestas y del tamaño correcto?</span>
+      </div>
+      <div class="crit-levels">
+        <div class="cl cl-a"><span class="cl-pts">⭐ 5 pts</span>Las imágenes están junto al texto, con ajuste "cuadrado" o "estrecho" y del tamaño que corresponde.</div>
+        <div class="cl cl-b"><span class="cl-pts">😊 4 pts</span>Las imágenes están, son correctas, pero alguna está un poco fuera de lugar o muy grande/pequeña.</div>
+        <div class="cl cl-c"><span class="cl-pts">🙂 2 pts</span>Las imágenes están "en línea" y se ven desordenadas (no les cambiaste el ajuste).</div>
+        <div class="cl cl-d"><span class="cl-pts">💪 1 pt</span>No hay imágenes o están completamente descolocadas.</div>
+      </div>
+    </div>
+
+    <div class="crit-row">
+      <div class="crit-top">
+        <span class="crit-emoji">▦</span>
+        <span class="crit-name">Columnas</span>
+        <span class="crit-q">¿Los tips están divididos en 2 columnas?</span>
+      </div>
+      <div class="crit-levels">
+        <div class="cl cl-a"><span class="cl-pts">⭐ 5 pts</span>Los tips están en 2 columnas iguales. El título queda arriba, separado. ¡Se ve como revista!</div>
+        <div class="cl cl-b"><span class="cl-pts">😊 4 pts</span>Hay columnas pero una es más larga que la otra o el título también quedó en columna.</div>
+        <div class="cl cl-c"><span class="cl-pts">🙂 2 pts</span>Intentaste las columnas pero todo el texto (título incluido) quedó revuelto.</div>
+        <div class="cl cl-d"><span class="cl-pts">💪 1 pt</span>No se usaron columnas.</div>
+      </div>
+    </div>
+
+    <div class="crit-row">
+      <div class="crit-top">
+        <span class="crit-emoji">⬚</span>
+        <span class="crit-name">Bordes</span>
+        <span class="crit-q">¿La portada tiene borde y los datos tienen cuadrito?</span>
+      </div>
+      <div class="crit-levels">
+        <div class="cl cl-a"><span class="cl-pts">⭐ 5 pts</span>La portada tiene borde de página decorativo Y cada dato curioso tiene su propio bordecito de párrafo.</div>
+        <div class="cl cl-b"><span class="cl-pts">😊 4 pts</span>Usaste borde de página O borde de párrafo, pero no los dos.</div>
+        <div class="cl cl-c"><span class="cl-pts">🙂 2 pts</span>Hay bordes pero aplicados en el lugar equivocado o en todo el documento.</div>
+        <div class="cl cl-d"><span class="cl-pts">💪 1 pt</span>No hay ningún tipo de borde en el documento.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════ SECCIÓN 2: PÁGINAS ══════ -->
+  <div class="sec">
+    <div class="sec-head h-blue">
+      <div class="emoji">📄</div>
+      <h2>Las 4 páginas de tu guía</h2>
+      <div class="badge">20 puntos</div>
+    </div>
+
+    <div class="crit-row">
+      <div class="crit-top">
+        <span class="crit-emoji">📕</span>
+        <span class="crit-name">Portada</span>
+        <span class="crit-q">¿Tiene título, nombre, imagen y borde?</span>
+      </div>
+      <div class="crit-levels">
+        <div class="cl cl-a"><span class="cl-pts">⭐ 5 pts</span>¡Tiene todo! Título grande y centrado, tu nombre, una imagen y un borde alrededor de la hoja.</div>
+        <div class="cl cl-b"><span class="cl-pts">😊 4 pts</span>Tiene 3 de las 4 cosas. Solo falta un elemento.</div>
+        <div class="cl cl-c"><span class="cl-pts">🙂 2 pts</span>Solo tiene 2 elementos. Le falta bastante.</div>
+        <div class="cl cl-d"><span class="cl-pts">💪 1 pt</span>La portada está casi vacía o no existe.</div>
+      </div>
+    </div>
+
+    <div class="crit-row">
+      <div class="crit-top">
+        <span class="crit-emoji">📅</span>
+        <span class="crit-name">Horario semanal</span>
+        <span class="crit-q">¿Está completo y se ve bien?</span>
+      </div>
+      <div class="crit-levels">
+        <div class="cl cl-a"><span class="cl-pts">⭐ 5 pts</span>El horario tiene todos los días, las horas y las materias completas. La tabla tiene colores y formato.</div>
+        <div class="cl cl-b"><span class="cl-pts">😊 4 pts</span>El horario está completo pero la tabla tiene poco formato o color.</div>
+        <div class="cl cl-c"><span class="cl-pts">🙂 2 pts</span>Al horario le faltan días, horas o materias.</div>
+        <div class="cl cl-d"><span class="cl-pts">💪 1 pt</span>No hay horario o es muy difícil de entender.</div>
+      </div>
+    </div>
+
+    <div class="crit-row">
+      <div class="crit-top">
+        <span class="crit-emoji">💡</span>
+        <span class="crit-name">Tips de supervivencia</span>
+        <span class="crit-q">¿Tienes 8–12 tips útiles con viñetas y columnas?</span>
+      </div>
+      <div class="crit-levels">
+        <div class="cl cl-a"><span class="cl-pts">⭐ 5 pts</span>¡8 a 12 tips! Todos con viñetas, en 2 columnas y bien escritos. ¡Consejos que de verdad sirven!</div>
+        <div class="cl cl-b"><span class="cl-pts">😊 4 pts</span>Entre 6 y 8 tips con viñetas y columnas. Los consejos son buenos.</div>
+        <div class="cl cl-c"><span class="cl-pts">🙂 2 pts</span>Menos de 6 tips, o no tienen viñetas, o no están en columnas.</div>
+        <div class="cl cl-d"><span class="cl-pts">💪 1 pt</span>Muy pocos tips o el contenido no tiene mucho sentido.</div>
+      </div>
+    </div>
+
+    <div class="crit-row">
+      <div class="crit-top">
+        <span class="crit-emoji">✨</span>
+        <span class="crit-name">Datos curiosos</span>
+        <span class="crit-q">¿Tienes 3–4 datos con imagen y borde cada uno?</span>
+      </div>
+      <div class="crit-levels">
+        <div class="cl cl-a"><span class="cl-pts">⭐ 5 pts</span>¡3 a 4 datos sorprendentes! Cada uno tiene su imagen al lado y su propio borde de párrafo. ¡Queda genial!</div>
+        <div class="cl cl-b"><span class="cl-pts">😊 4 pts</span>2 a 3 datos con imágenes. Solo algunos tienen borde.</div>
+        <div class="cl cl-c"><span class="cl-pts">🙂 2 pts</span>Tienes 1 o 2 datos pero sin imagen ni borde.</div>
+        <div class="cl cl-d"><span class="cl-pts">💪 1 pt</span>No hay datos curiosos o están muy incompletos.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════ SECCIÓN 3: DISEÑO ══════ -->
+  <div class="sec">
+    <div class="sec-head h-pur">
+      <div class="emoji">🎨</div>
+      <h2>Diseño y creatividad</h2>
+      <div class="badge">20 puntos</div>
+    </div>
+
+    <div class="crit-row">
+      <div class="crit-top">
+        <span class="crit-emoji">🌈</span>
+        <span class="crit-name">Colores y estilo</span>
+        <span class="crit-q">¿El documento se ve ordenado y con colores que combinan?</span>
+      </div>
+      <div class="crit-levels">
+        <div class="cl cl-a"><span class="cl-pts">⭐ 5 pts</span>Los colores combinan entre sí en todo el documento. Se nota que pensaste en cómo hacerlo verse bonito.</div>
+        <div class="cl cl-b"><span class="cl-pts">😊 4 pts</span>El documento se ve bien, aunque hay algún color fuera de lugar.</div>
+        <div class="cl cl-c"><span class="cl-pts">🙂 2 pts</span>Muchos colores mezclados sin un orden claro.</div>
+        <div class="cl cl-d"><span class="cl-pts">💪 1 pt</span>Sin colores o se ve muy desordenado visualmente.</div>
+      </div>
+    </div>
+
+    <div class="crit-row">
+      <div class="crit-top">
+        <span class="crit-emoji">💫</span>
+        <span class="crit-name">Originalidad</span>
+        <span class="crit-q">¿Se nota tu personalidad en la guía?</span>
+      </div>
+      <div class="crit-levels">
+        <div class="cl cl-a"><span class="cl-pts">⭐ 5 pts</span>¡La guía es única! Se nota que es tuya: contenido propio, ideas interesantes y mucha personalidad.</div>
+        <div class="cl cl-b"><span class="cl-pts">😊 4 pts</span>La guía tiene algo de personalidad, aunque algunos tips o datos son muy comunes.</div>
+        <div class="cl cl-c"><span class="cl-pts">🙂 2 pts</span>El contenido es muy básico o genérico. Poco esfuerzo personal.</div>
+        <div class="cl cl-d"><span class="cl-pts">💪 1 pt</span>Parece que no se puso mucho esfuerzo o el contenido está copiado.</div>
+      </div>
+    </div>
+
+    <div class="crit-row">
+      <div class="crit-top">
+        <span class="crit-emoji">🖼️</span>
+        <span class="crit-name">Elección de imágenes</span>
+        <span class="crit-q">¿Las imágenes tienen relación con el texto?</span>
+      </div>
+      <div class="crit-levels">
+        <div class="cl cl-a"><span class="cl-pts">⭐ 5 pts</span>Todas las imágenes tienen relación directa con su sección. Se ven nítidas y del tamaño correcto.</div>
+        <div class="cl cl-b"><span class="cl-pts">😊 4 pts</span>Las imágenes son apropiadas aunque alguna no encaja tan bien con el texto.</div>
+        <div class="cl cl-c"><span class="cl-pts">🙂 2 pts</span>Hay imágenes pero no tienen mucho que ver con el texto o se ven borrosas.</div>
+        <div class="cl cl-d"><span class="cl-pts">💪 1 pt</span>Sin imágenes o imágenes que no tienen nada que ver.</div>
+      </div>
+    </div>
+
+    <div class="crit-row">
+      <div class="crit-top">
+        <span class="crit-emoji">✏️</span>
+        <span class="crit-name">Ortografía</span>
+        <span class="crit-q">¿Las palabras están bien escritas?</span>
+      </div>
+      <div class="crit-levels">
+        <div class="cl cl-a"><span class="cl-pts">⭐ 5 pts</span>¡Sin errores! Todo está bien escrito y las frases se entienden perfectamente.</div>
+        <div class="cl cl-b"><span class="cl-pts">😊 4 pts</span>Hay 1 o 2 errorcitos pequeños pero el texto se entiende bien.</div>
+        <div class="cl cl-c"><span class="cl-pts">🙂 2 pts</span>Hay varios errores de ortografía (3 a 5) o frases que no se entienden bien.</div>
+        <div class="cl cl-d"><span class="cl-pts">💪 1 pt</span>Muchos errores que hacen difícil leer el documento.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════ SECCIÓN 4: PRESENTACIÓN ══════ -->
+  <div class="sec">
+    <div class="sec-head h-grn">
+      <div class="emoji">🎤</div>
+      <h2>Presentación ante la clase</h2>
+      <div class="badge">15 puntos</div>
+    </div>
+
+    <div class="crit-row">
+      <div class="crit-top">
+        <span class="crit-emoji">📢</span>
+        <span class="crit-name">Cómo hablas</span>
+        <span class="crit-q">¿Hablas claro y en voz alta para que todos te escuchen?</span>
+      </div>
+      <div class="crit-levels">
+        <div class="cl cl-a"><span class="cl-pts">⭐ 5 pts</span>Hablas con claridad, fuerte y sin leer el documento. Explicas con tus propias palabras. ¡Todos te entienden!</div>
+        <div class="cl cl-b"><span class="cl-pts">😊 4 pts</span>Se te entiende bien, aunque hay un momento donde la voz baja o buscas el texto.</div>
+        <div class="cl cl-c"><span class="cl-pts">🙂 2 pts</span>Lees el documento en lugar de explicarlo, o la voz es muy baja.</div>
+        <div class="cl cl-d"><span class="cl-pts">💪 1 pt</span>Es difícil entenderte o casi no presentas.</div>
+      </div>
+    </div>
+
+    <div class="crit-row">
+      <div class="crit-top">
+        <span class="crit-emoji">💻</span>
+        <span class="crit-name">Muestras tu documento</span>
+        <span class="crit-q">¿Señalas en la pantalla las herramientas que usaste?</span>
+      </div>
+      <div class="crit-levels">
+        <div class="cl cl-a"><span class="cl-pts">⭐ 5 pts</span>Navegas por el documento con confianza y señalas exactamente dónde usaste cada herramienta. ¡Eres un experto!</div>
+        <div class="cl cl-b"><span class="cl-pts">😊 4 pts</span>Muestras el documento y mencionas las herramientas, aunque a veces no sabes exactamente dónde señalar.</div>
+        <div class="cl cl-c"><span class="cl-pts">🙂 2 pts</span>Solo muestras el documento pero no explicas qué herramientas usaste.</div>
+        <div class="cl cl-d"><span class="cl-pts">💪 1 pt</span>No puedes abrir el documento o no lo muestras.</div>
+      </div>
+    </div>
+
+    <div class="crit-row">
+      <div class="crit-top">
+        <span class="crit-emoji">⏱️</span>
+        <span class="crit-name">Tiempo y orden</span>
+        <span class="crit-q">¿Presentas todas las páginas sin saltarte partes?</span>
+      </div>
+      <div class="crit-levels">
+        <div class="cl cl-a"><span class="cl-pts">⭐ 5 pts</span>Presentas las 4 páginas en orden, dentro del tiempo y sin saltarte ninguna sección.</div>
+        <div class="cl cl-b"><span class="cl-pts">😊 4 pts</span>Presentas casi todo, aunque te saltas una parte o te pasas un poco del tiempo.</div>
+        <div class="cl cl-c"><span class="cl-pts">🙂 2 pts</span>Te saltas varias secciones o la presentación queda muy corta.</div>
+        <div class="cl cl-d"><span class="cl-pts">💪 1 pt</span>La presentación está muy desorganizada o no la terminas.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════ SECCIÓN BONO ══════ -->
+  <div class="sec">
+    <div class="sec-head h-amb">
+      <div class="emoji">⭐</div>
+      <h2>¡Puntos extra! — Esfuerzo adicional</h2>
+      <div class="badge">+15 pts</div>
+    </div>
+
+    <div class="crit-row">
+      <div class="crit-top">
+        <span class="crit-emoji">📖</span>
+        <span class="crit-name">Más de 4 páginas</span>
+        <span class="crit-q">¿Le agregaste páginas extra a tu guía?</span>
+      </div>
+      <div class="crit-levels">
+        <div class="cl cl-a"><span class="cl-pts">⭐ 5 pts</span>¡Hiciste páginas de más con buen contenido y usando las herramientas de Word correctamente!</div>
+        <div class="cl cl-b"><span class="cl-pts">😊 3 pts</span>Hay páginas extra aunque el contenido o el formato es más sencillo.</div>
+        <div class="cl cl-d" style="grid-column:span 2"><span class="cl-pts">💪 0 pts</span>Solo tiene las 4 páginas del proyecto. ¡Está bien, es lo que se pedía!</div>
+      </div>
+    </div>
+
+    <div class="crit-row">
+      <div class="crit-top">
+        <span class="crit-emoji">🚀</span>
+        <span class="crit-name">Función sorpresa</span>
+        <span class="crit-q">¿Usaste algo que no pedimos en clase? (encabezado, pie de página, WordArt…)</span>
+      </div>
+      <div class="crit-levels">
+        <div class="cl cl-a"><span class="cl-pts">⭐ 5 pts</span>¡Usaste una función que no enseñamos! Encabezado, pie de página, tabla de contenido, WordArt… ¡y quedó bien!</div>
+        <div class="cl cl-b"><span class="cl-pts">😊 3 pts</span>Intentaste una función extra aunque no quedó perfecta.</div>
+        <div class="cl cl-d" style="grid-column:span 2"><span class="cl-pts">💪 0 pts</span>Solo se usaron las herramientas del proyecto. ¡Está perfecto!</div>
+      </div>
+    </div>
+
+    <div class="crit-row">
+      <div class="crit-top">
+        <span class="crit-emoji">🤝</span>
+        <span class="crit-name">Buen compañero/a</span>
+        <span class="crit-q">¿Ayudaste a alguien durante el proyecto?</span>
+      </div>
+      <div class="crit-levels">
+        <div class="cl cl-a"><span class="cl-pts">⭐ 5 pts</span>¡Ayudaste a tus compañeros cuando tenían dudas o fueron un ejemplo para la clase!</div>
+        <div class="cl cl-b"><span class="cl-pts">😊 3 pts</span>Ayudaste en algún momento aunque fue algo puntual.</div>
+        <div class="cl cl-d" style="grid-column:span 2"><span class="cl-pts">💪 0 pts</span>No se observó apoyo especial a compañeros en esta ocasión.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCORE SHEET -->
+  <div class="sheet">
+    <h3>📋 Mi puntuación</h3>
+    <div class="student-line">
+      <span>👤 Nombre:</span>
+      <input type="text" placeholder="Escribe tu nombre aquí" />
+      <span style="margin-left:12px">📅 Fecha:</span>
+      <input type="text" placeholder="___/___/______" style="max-width:120px" />
+    </div>
+    <div class="scores-grid">
+      <div class="score-box">
+        <span class="sb-icon">🛠️</span>
+        <div>
+          <div class="sb-label">Herramientas de Word</div>
+          <div class="sb-max">/ 30 puntos</div>
+        </div>
+        <div class="sb-line"></div>
+      </div>
+      <div class="score-box">
+        <span class="sb-icon">📄</span>
+        <div>
+          <div class="sb-label">Las 4 páginas</div>
+          <div class="sb-max">/ 20 puntos</div>
+        </div>
+        <div class="sb-line"></div>
+      </div>
+      <div class="score-box">
+        <span class="sb-icon">🎨</span>
+        <div>
+          <div class="sb-label">Diseño y creatividad</div>
+          <div class="sb-max">/ 20 puntos</div>
+        </div>
+        <div class="sb-line"></div>
+      </div>
+      <div class="score-box">
+        <span class="sb-icon">🎤</span>
+        <div>
+          <div class="sb-label">Presentación</div>
+          <div class="sb-max">/ 15 puntos</div>
+        </div>
+        <div class="sb-line"></div>
+      </div>
+      <div class="score-box" style="border-color:#FFD600">
+        <span class="sb-icon">⭐</span>
+        <div>
+          <div class="sb-label" style="color:#7a5500">Puntos extra</div>
+          <div class="sb-max">/ 15 puntos</div>
+        </div>
+        <div class="sb-line"></div>
+      </div>
+      <div class="score-box" style="border-color:#d0c8e8">
+        <span class="sb-icon">💬</span>
+        <div>
+          <div class="sb-label">Comentarios del profe</div>
+          <div class="sb-max">_________________</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="final-row">
+      <div class="fr-label">🏆 PUNTAJE FINAL</div>
+      <div class="fr-line"></div>
+      <div class="fr-score">_____ / 100</div>
+    </div>
+
+    <div class="scale">
+      <div class="sc-item sc1">
+        <div class="sc-range">90–100</div>
+        <div class="sc-label">⭐ ¡Súper!</div>
+      </div>
+      <div class="sc-item sc2">
+        <div class="sc-range">80–89</div>
+        <div class="sc-label">😊 Muy bien</div>
+      </div>
+      <div class="sc-item sc3">
+        <div class="sc-range">70–79</div>
+        <div class="sc-label">🙂 Bien</div>
+      </div>
+      <div class="sc-item sc4">
+        <div class="sc-range">60–69</div>
+        <div class="sc-label">🌱 Regular</div>
+      </div>
+      <div class="sc-item sc5">
+        <div class="sc-range">0–59</div>
+        <div class="sc-label">💪 ¡A mejorar!</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
